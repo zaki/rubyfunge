@@ -80,6 +80,7 @@ class RubyFunge
   end
 
   # Instructions
+private
   def push(num)
     @stack.push num
   end
@@ -196,7 +197,6 @@ class RubyFunge
     push c
   end
 
-private
   def pop
     return 0 if @stack.length == 0
     @stack.pop
