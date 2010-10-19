@@ -1,9 +1,8 @@
-require File.join(File.dirname(__FILE__), '..', 'rubyfunge')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'rubyfunge')
 require "spec"
-
 describe "RubyFunge" do
   before(:each) do
-    @rbf = RubyFunge.new
+    @rbf = RubyFunge::RubyFunge.new
   end
 
   it "should go right" do
