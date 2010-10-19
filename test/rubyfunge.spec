@@ -195,6 +195,56 @@ EOS
                      "fizz 94 buzz fizz 97 98 fizz buzz "
   end
 
+  it "should wrap around to the right" do
+    @rbf.run <<-EOS
+>>v
+1@>>>
+EOS
+    @rbf.stack.should == [1]
+  end
+
+  it "should wrap around to the left" do
+    @rbf.run <<-EOS
+>>>>>>v
+<<<<<<<    @1
+EOS
+    @rbf.stack.should == [1]
+  end
+
+  it "should wrap around at the bottom" do
+    @rbf.run <<-EOS
+v1
+v@
+>v
+ v
+ v
+EOS
+    @rbf.stack.should == [1]
+  end
+
+  it "should wrap around at the top" do
+    @rbf.run <<-EOS
+^
+@
+1
+EOS
+    @rbf.stack.should == [1]
+  end
+
+  it "should ask the user for a number when dividing by zero" do
+    redirect_stdin '5' do
+      @rbf.run('00/@')
+      @rbf.stack.should == [5]
+    end
+  end
+
+  it "should ask the user for a number when modulo dividing by zero" do
+    redirect_stdin '5' do
+      @rbf.run('00%@')
+      @rbf.stack.should == [5]
+    end
+  end
+
   def redirect_stdout
     oldstdout, $stdout = $stdout, StringIO.new
     yield

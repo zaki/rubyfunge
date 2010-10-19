@@ -29,7 +29,6 @@ class RubyFunge
   end
 
   def run(code)
-    # TODO: implement code wrap-around for Befunge-93 compliance
     i = 0
     @code = []
     code.each_line {|l|
@@ -57,12 +56,16 @@ class RubyFunge
       case @dir
         when :right
           @x += 1
+          @x = 0 if @x > @code[@y].length - 1
         when :left
           @x -= 1
+          @x = @code[@y].length - 1 if @x < 0
         when :up
           @y -= 1
+          @y = @code.length - 1 if @y < 0
         when :down
           @y += 1
+          @y = 0 if @y > @code.length - 1
       end
     end
   end
@@ -105,15 +108,21 @@ class RubyFunge
   end
 
   def op_div
-    # TODO: Ask user if a == 0
     a,b=pop,pop
-    push b/a
+    if a == 0
+      push $stdin.readline.to_i
+    else
+      push b/a
+    end
   end
 
   def op_mod
-    # TODO: Ask user if a == 0
     a,b=pop,pop
-    push b%a
+    if a == 0
+      push $stdin.readline.to_i
+    else
+      push b%a
+    end
   end
 
   def op_not
